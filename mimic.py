@@ -45,8 +45,19 @@ def create_mimic_dict(filename):
                 "who" : ["knows"]
             }
     """
-    # +++your code here+++
-    pass
+    mimic_dictionary = {}
+    f = open(filename, 'r')
+    text = f.read()
+    f.close()
+    words = text.split()
+    previous_dictionary = ''
+    for word in words:
+        if previous_dictionary not in mimic_dictionary:
+            mimic_dictionary[previous_dictionary] = [word]
+        else:
+            mimic_dictionary[previous_dictionary].append(word)
+        previous_dictionary = word
+    return mimic_dictionary
 
 
 def print_mimic_random(mimic_dict, num_words):
@@ -58,8 +69,6 @@ def print_mimic_random(mimic_dict, num_words):
         - Randomly select a new word from the next-list
         - Repeat this process num_words times
     """
-    # +++your code here+++
-    pass
 
 
 def main(args):
