@@ -45,19 +45,19 @@ def create_mimic_dict(filename):
                 "who" : ["knows"]
             }
     """
-    mimic_dictionary = {}
+    mimic_dict = {'': ['I']}
     f = open(filename, 'r')
     text = f.read()
     f.close()
     words = text.split()
-    previous_dictionary = ''
-    for word in words:
-        if previous_dictionary not in mimic_dictionary:
-            mimic_dictionary[previous_dictionary] = [word]
+    for i, word in enumerate(words, 1):
+        if i == len(words):
+            continue
+        if word not in mimic_dict:
+            mimic_dict[word] = [words[i]]
         else:
-            mimic_dictionary[previous_dictionary].append(word)
-        previous_dictionary = word
-    return mimic_dictionary
+            mimic_dict[word].append(words[i])
+    return mimic_dict
 
 
 def print_mimic_random(mimic_dict, num_words):
@@ -69,13 +69,20 @@ def print_mimic_random(mimic_dict, num_words):
         - Randomly select a new word from the next-list
         - Repeat this process num_words times
     """
+    start_word = ''
+    story_list = []
+    for _ in range(num_words):
+        if start_word not in mimic_dict:
+            start_word = ''
+        next_word = random.choice(mimic_dict[start_word])
+        story_list.append(next_word)
+        start_word = next_word
+    print(' '.join(story_list), end='')
 
 
 def main(args):
-    # Get input filename from command line args
     filename = args[0]
 
-    # Create and print the jumbled (mimic) version of the input file
     print(f'Using {filename} as input:\n')
     d = create_mimic_dict(filename)
     print_mimic_random(d, 200)
